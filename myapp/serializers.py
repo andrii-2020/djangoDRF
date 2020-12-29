@@ -6,4 +6,4 @@ from .models import OfficeM
 class OfficeSerialiaer(ModelSerializer):
     class Meta:
         model = OfficeM
-        fields = ('id', 'name', 'city')
+        fields = ('id','name', 'city')
