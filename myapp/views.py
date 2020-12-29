@@ -19,13 +19,15 @@ class MyApi(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get(self, *args, **kwargs):
-        filt = self.request.query_params.get('filter', None)
-        print(filt)
+        filt = self.request.query_params.get('filter',  None)
+        filt1 = self.request.query_params.get('startswith', None)
         qs = OfficeM.objects.all()
         if filt:
             qs = qs.filter(pk=filt)
+        if filt1:
+            qs = qs.filter(name__startswith=filt1)
         serializer = OfficeSerialiaer(qs, many=True)
-        return Response(serializer.data, status= status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, *args, **kwargs):
         f = self.request.query_params.get('filter', None)
