@@ -1,0 +1,32 @@
+
+
+<div>
+  <button (click)="showform()">CreateOffice</button>
+  <button (click)="showYser()" >user</button>
+  <div *ngIf="user">
+    <div *ngFor="let emp of employees" class="offices">
+      <app-employees  [user]="emp">>delete</app-employees>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <p></p>
+  <router-outlet></router-outlet>
+  <div *ngIf="visibleForm">
+    <form [formGroup]="form">
+      <label>name<input type="text" formControlName="name"></label>
+      <label>city<input type="text" formControlName="city"></label>
+      <button (click)="save(form)">save</button>
+    </form>
+  </div>
+</div>
+  <div *ngFor="let office of offices" class="offices">
+    <h2>{{office.id}}</h2>
+    <h3>{{office.name}}</h3>
+    <h3>{{office.city}}</h3>
+    <button (click)="delete(office.id)">Delete</button>
+  </div>
+
+
+
+
+
