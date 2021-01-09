@@ -26,7 +26,7 @@ SECRET_KEY = '!h)7%@blc)!4*-j)1(_+wk@ao7y$nbli86(88$=m*0^l+%5_5q'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 
@@ -40,15 +40,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-
+    'corsheaders',
     # myApps:
     'myapp',
+    'employee'
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,4 +133,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 APPEND_SLASH = False
-ALLOWED_HOSTS = ['*']
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
