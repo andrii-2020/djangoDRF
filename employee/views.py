@@ -12,7 +12,7 @@ class EmployeeListView(APIView):
     def get(*args, **kwargs):
         qs = EmployeeM.objects.all()
         data = EmployeeSerializer(qs, many=True).data
-        return Response(data, status.HTTP_201_CREATED)
+        return Response(data, status.HTTP_200_OK)
 
 
 class EmployeeDeleteUpdateView(APIView):

@@ -10,4 +10,4 @@ class  EmployeeM(models.Model):
     age = models.IntegerField()
     city = models.CharField(max_length=20)
     office = models.ForeignKey(OfficeM, on_delete=models.CASCADE, related_name='employees')
-    photo = models.ImageField('Фото', upload_to='employee/photos', default='', blank=True)
+    photo = models.ImageField(upload_to='employee/photos', default='', blank=True)

@@ -2,13 +2,8 @@
 
 <div>
   <button (click)="showform()">CreateOffice</button>
-  <button (click)="showYser()" >user</button>
-  <div *ngIf="user">
-    <div *ngFor="let emp of employees" class="offices">
-      <app-employees  [user]="emp">>delete</app-employees>
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+  <br>
+  <br>
   <p></p>
   <router-outlet></router-outlet>
   <div *ngIf="visibleForm">
@@ -18,13 +13,23 @@
       <button (click)="save(form)">save</button>
     </form>
   </div>
-</div>
+  </div>
   <div *ngFor="let office of offices" class="offices">
     <h2>{{office.id}}</h2>
     <h3>{{office.name}}</h3>
     <h3>{{office.city}}</h3>
     <button (click)="delete(office.id)">Delete</button>
+    <div *ngFor="let e of office.employees">
+      -------------------------------------------
+      <h2>Employee</h2>
+      <div> <img src="{{'http://localhost:8000'+e.photo}}"  alt="" width="100" height="100"/></div>
+      <h3> {{e.id}} name: {{e.name}} * age: {{e.age}} * city: {{e.city}} * office: {{e.office}}</h3>
+      <hr>
+    </div>
+    <br><br>
   </div>
+
+
 
 
 

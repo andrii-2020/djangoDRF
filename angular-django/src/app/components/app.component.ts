@@ -8,6 +8,7 @@ import {IOffices} from '../interfaces/offices';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  uncheckableRadioModel: 'C';
   ngOnInit(): void {
   }
 

@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app.component';
 import {HttpClientModule} from '@angular/common/http';
 import { OfficesComponent } from './components/offices/offices.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { EmployeesComponent } from './components/employees/employees.component';
 
 
@@ -21,6 +21,7 @@ import { EmployeesComponent } from './components/employees/employees.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IEmployees} from '../../interfaces/employees';
 import {OfficeService} from '../../services/office-service';
 
@@ -8,14 +8,15 @@ import {OfficeService} from '../../services/office-service';
   styleUrls: ['./employees.component.css']
 })
 export class EmployeesComponent implements OnInit {
-
-  @Input()
-  user: IEmployees;
+  employees: IEmployees[];
   constructor(private officeService: OfficeService) {
   }
 
   ngOnInit(): void {
-    console.log(this.user);
+    this.officeService.getEmployees().subscribe(val => {
+      this.employees = val;
+
+    });
   }
 
    deleteEmp(id: number): void {

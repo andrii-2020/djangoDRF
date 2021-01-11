@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {IOffices} from '../../interfaces/offices';
 import {OfficeService} from '../../services/office-service';
 import {FormControl, FormGroup} from '@angular/forms';
-import {EmployeesService} from '../../services/employees.service';
 import {IEmployees} from '../../interfaces/employees';
-
 
 @Component({
   selector: 'app-offices',
@@ -13,17 +11,17 @@ import {IEmployees} from '../../interfaces/employees';
 })
 export class OfficesComponent implements OnInit {
   offices: IOffices[];
-  employees: IEmployees[];
   form: FormGroup;
   visibleForm = false;
-  user = false;
+  visibleFor = false;
   constructor(private officeService: OfficeService) {
   }
 
 
   ngOnInit(): void {
-    this.officeService.getAll().subscribe(val => this.offices = val );
-    this.officeService.getEmployees().subscribe(val => this.employees = val);
+    this.officeService.getAll().subscribe(val => {
+      this.offices = val;
+    } );
     this.form = new FormGroup({
       name: new FormControl(''),
       city: new FormControl(''),
@@ -41,9 +39,7 @@ export class OfficesComponent implements OnInit {
   delete(id: number): void {
     this.officeService.delete(id).subscribe(() => this.ngOnInit());
   }
-
-  showYser(): void {
-    this.user = !this.user;
+  showformE(): void {
+    this.visibleFor = !this.visibleFor;
   }
-
 }

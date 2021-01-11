@@ -31,4 +31,5 @@ export class OfficeService {
   deleteEmployees(id: number): Observable<void> {
     return this.httpClient.delete<void>(`http://localhost:8000/employees/${id}`);
   }
+
 }
