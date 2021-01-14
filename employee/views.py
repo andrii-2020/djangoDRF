@@ -1,32 +1,22 @@
 from rest_framework import status
-from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.views import APIView
+
+
+from rest_framework.generics import  DestroyAPIView, ListAPIView
+from rest_framework.mixins import UpdateModelMixin
 
 from .models import EmployeeM
 from .serializer import EmployeeSerializer
 
 
-class EmployeeListView(APIView):
-    @staticmethod
-    def get(*args, **kwargs):
-        qs = EmployeeM.objects.all()
-        data = EmployeeSerializer(qs, many=True).data
-        return Response(data, status.HTTP_200_OK)
+class EmployeeListView(ListAPIView):
+    serializer_class = EmployeeSerializer
+    queryset = EmployeeM.objects.all()
 
 
-class EmployeeDeleteUpdateView(APIView):
-    @staticmethod
-    def delete(*args, **kwargs):
-        id = kwargs.get('id')
-        get_object_or_404(EmployeeM, pk=id).delete()
-        return Response("ok", status.HTTP_200_OK)
+class EmployeeDeleteUpdateView(DestroyAPIView, UpdateModelMixin):
+    queryset = EmployeeM.objects
+    serializer_class = EmployeeSerializer
+    lookup_field = 'id'
 
-    def patch(self, *args, **kwargs):
-        id = kwargs.get('id')
-        data = self.request.data
-        instance = get_object_or_404(EmployeeM, pk=id)
-        serializer = EmployeeSerializer(instance=instance, data=data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status.HTTP_200_OK)
+    def patch(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)

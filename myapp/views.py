@@ -1,56 +1,51 @@
-
+from django.db.models import F, Prefetch
 from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import status
-
+from rest_framework.generics import ListCreateAPIView, DestroyAPIView, CreateAPIView
+from rest_framework.mixins import UpdateModelMixin
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from .models import OfficeM
 from .serializers import OfficeSerialiaer
 from employee.serializer import EmployeeSerializer
+from employee.models import EmployeeM
+from user.permissions import IsSuperUser, IsAdmin
+
 # Create your views here.
 
 
-class MyApiList(APIView):
-    def post(self, *args, **kwargs):
-        data = self.request.data
-        serializer = OfficeSerialiaer(data=data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+class MyApiList(ListCreateAPIView):
+    serializer_class = OfficeSerialiaer
 
-    @staticmethod
-    def get(*args, **kwargs):
+    def get_queryset(self):
+        city = self.request.query_params.get('city')
+        age = self.request.query_params.getlist('age')
         qs = OfficeM.objects.all()
-        serializer = OfficeSerialiaer(qs, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if city:
+            qs = qs.filter(city__iexact=city)
+        if age and len(age) == 2:
+            objects_filter = EmployeeM.objects.filter(age__range=age, city__iexact=F('office__city'))
+            qs = qs.prefetch_related(Prefetch('employees', objects_filter))
+        return qs
 
 
-class MyListDeleteUpdateView(APIView):
-    @staticmethod
-    def delete(*args, **kwargs):
-        id = kwargs.get('id')
-        get_object_or_404(OfficeM, pk=id).delete()
-        return Response("ok", status.HTTP_200_OK)
+class MyListDeleteUpdateView(DestroyAPIView, UpdateModelMixin):
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (IsAdmin,)
 
-    def patch(self, *args, **kwargs):
-        id = kwargs.get('id')
-        data = self.request.data
-        instance = get_object_or_404(OfficeM, pk=id)
-        serializer = OfficeSerialiaer(instance=instance, data=data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status.HTTP_200_OK)
+    queryset = OfficeM.objects
+    serializer_class = OfficeSerialiaer
+    lookup_field = 'id'
+
+    def patch(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
 
 
-class OfficeEmployeeView(APIView):
-    def post(self, *args, **kwargs):
-        pk = kwargs.get('pk')
-        print(pk)
-        data = self.request.data
-        office = get_object_or_404(OfficeM, pk=pk)
-        serializer = EmployeeSerializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        #serializer.save(office_id=pk)
+class OfficeEmployeeView(CreateAPIView):
+    serializer_class = EmployeeSerializer
+
+    def perform_create(self, serializer):
+        office_id = self.kwargs.get('pk')
+        office = get_object_or_404(OfficeM, pk=office_id)
         serializer.save(office=office)
-        return Response(serializer.data)
+

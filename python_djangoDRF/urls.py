@@ -19,9 +19,8 @@ from django.conf import settings
 
 urlpatterns = [
     path('offices', include('myapp.urls')),
-    path('employees', include('employee.urls'))
+    path('employees', include('employee.urls')),
+    path('users', include('user.urls'))
 ]
 
 
-if settings.DEBUG:
-  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,7 +5,7 @@ from .models import OfficeM
 
 
 class OfficeSerialiaer(ModelSerializer):
-    employees = EmployeeSerializer(many=True)
+    employees = EmployeeSerializer(many=True, read_only=True)
 
     class Meta:
         model = OfficeM
