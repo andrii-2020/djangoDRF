@@ -2,3 +2,4 @@
 .idea/
 ./employee/migrations
 ./myapp/migrations
+.gitignore

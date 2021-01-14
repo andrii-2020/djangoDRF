@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IEmployees} from '../../interfaces/employees';
 import {OfficeService} from '../../services/office-service';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-employees',
@@ -8,18 +9,23 @@ import {OfficeService} from '../../services/office-service';
   styleUrls: ['./employees.component.css']
 })
 export class EmployeesComponent implements OnInit {
-  employees: IEmployees[];
-  constructor(private officeService: OfficeService) {
+  visibleFor = false;
+  formE: FormGroup;
+  id = new FormControl('');
+  constructor() {
   }
 
   ngOnInit(): void {
-    this.officeService.getEmployees().subscribe(val => {
-      this.employees = val;
-
+    this.formE = new FormGroup({
+      name: new FormControl(''),
+      age: new FormControl(''),
+      city: new FormControl(''),
+      id: this.id
     });
   }
 
-   deleteEmp(id: number): void {
-     this.officeService.deleteEmployees(id).subscribe(() => this.ngOnInit());
+  editEmployee(id: any, formE: FormGroup): void {
+    console.log(id, formE.getRawValue());
+    this.visibleFor = !this.visibleFor;
   }
 }

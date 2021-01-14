@@ -1,34 +1,45 @@
 
-
+<router-outlet></router-outlet>
 <div>
-  <button (click)="showform()">CreateOffice</button>
   <br>
   <br>
-  <p></p>
-  <router-outlet></router-outlet>
-  <div *ngIf="visibleForm">
-    <form [formGroup]="form">
-      <label>name<input type="text" formControlName="name"></label>
-      <label>city<input type="text" formControlName="city"></label>
-      <button (click)="save(form)">save</button>
-    </form>
-  </div>
-  </div>
-  <div *ngFor="let office of offices" class="offices">
-    <h2>{{office.id}}</h2>
-    <h3>{{office.name}}</h3>
-    <h3>{{office.city}}</h3>
-    <button (click)="delete(office.id)">Delete</button>
-    <div *ngFor="let e of office.employees">
-      -------------------------------------------
-      <h2>Employee</h2>
-      <div> <img src="{{'http://localhost:8000'+e.photo}}"  alt="" width="100" height="100"/></div>
-      <h3> {{e.id}} name: {{e.name}} * age: {{e.age}} * city: {{e.city}} * office: {{e.office}}</h3>
-      <hr>
-    </div>
-    <br><br>
-  </div>
 
+
+<div class="offices">
+  <div *ngFor="let office of offices" id="d"  class="card" style="width: 18rem;">
+    <div class="card-body">
+       <h1 class="card-text"> {{office.id}}
+         {{office.name}}
+         {{office.city}}
+       </h1>
+        <button  type="button" class="btn btn-dark" (click)="showform()">CreateOffice</button>
+        <button type="button" class="btn btn-dark" (click)="delete(office.id)">Delete</button>
+    </div>
+    <div class="formO" *ngIf="visibleForm">
+      <form [formGroup]="form">
+        <label class="form-label">name</label>
+        <input class="form-control" aria-describedby="passwordHelpBlock" type="text" formControlName="name">
+        <label class="form-label">city</label>
+        <input  class="form-control" aria-describedby="passwordHelpBlock" type="text" formControlName="city">
+        <button type="button" class="btn btn-dark" (click)="save(form)">save</button>
+      </form>
+    </div>
+
+
+    <h3>employee</h3>
+    <div *ngFor="let e of office.employees"  class="card" style="width: 18rem;">
+      <div class="formO" *ngIf="visibleFor">
+      <app-employees></app-employees>
+      </div>
+        <img src="{{'http://localhost:8000'+e.photo}}"  class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">{{e.id}}</h5>
+          <p class="card-text">name: {{e.name}} * age: {{e.age}} * city: {{e.city}} * office: {{e.office}}</p>
+        </div>
+      <button type="button" class="btn btn-dark"  (click)="edit()">edit</button>
+    </div>
+  </div>
+  </div>
 
 
 

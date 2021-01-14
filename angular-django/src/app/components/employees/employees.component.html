@@ -1,15 +1,20 @@
 
-
-
-
-
-<div *ngFor="let user of employees ">
-  <div *ngIf="employees">
-
-    <p>{{user.age}}</p>
-    <p>{{user.city}}</p>
-    <p>{{user.office}}</p>
-    <button (click)="deleteEmp(user.id)">delete</button>
-    <hr>
-  </div>
+<div>
+<form [formGroup]="formE">
+  <label class="form-label">name</label>
+  <input class="form-control" aria-describedby="passwordHelpBlock" type="text" formControlName="name">
+  <label class="form-label">age</label>
+  <input  class="form-control" aria-describedby="passwordHelpBlock" type="number" formControlName="age">
+  <label class="form-label">city</label>
+  <input  class="form-control" aria-describedby="passwordHelpBlock" type="text" formControlName="city">
+  <label class="form-label">office</label>
+  <select class="form-select" aria-label="Default select example">
+    <option [formControl]="id" selected>Open this select menu</option>
+    <option  value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+  </select>
+  <button type="button" class="btn btn-dark" (click)="editEmployee(e.id, formE)">edit</button>
+</form>
 </div>
+
