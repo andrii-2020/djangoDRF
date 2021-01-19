@@ -2,19 +2,16 @@ from django.db.models import F, Prefetch
 from rest_framework.generics import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, CreateAPIView
 from rest_framework.mixins import UpdateModelMixin
-from rest_framework.authentication import BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from user.permissions import IsAdmin
 
 from .models import OfficeM
 from .serializers import OfficeSerialiaer
 from employee.serializer import EmployeeSerializer
 from employee.models import EmployeeM
-from user.permissions import IsSuperUser, IsAdmin
-
-# Create your views here.
 
 
 class MyApiList(ListCreateAPIView):
+    permission_classes = (IsAdmin,)
     serializer_class = OfficeSerialiaer
 
     def get_queryset(self):
@@ -30,9 +27,6 @@ class MyApiList(ListCreateAPIView):
 
 
 class MyListDeleteUpdateView(DestroyAPIView, UpdateModelMixin):
-    authentication_classes = (BasicAuthentication,)
-    permission_classes = (IsAdmin,)
-
     queryset = OfficeM.objects
     serializer_class = OfficeSerialiaer
     lookup_field = 'id'
@@ -48,4 +42,3 @@ class OfficeEmployeeView(CreateAPIView):
         office_id = self.kwargs.get('pk')
         office = get_object_or_404(OfficeM, pk=office_id)
         serializer.save(office=office)
-
